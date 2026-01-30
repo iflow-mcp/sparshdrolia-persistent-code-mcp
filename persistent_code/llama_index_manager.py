@@ -11,12 +11,24 @@ import tempfile
 from typing import Dict, List, Optional, Any, Tuple, Set, Union, Callable
 import json
 
-# LlamaIndex imports
-from llama_index.core import Document, KnowledgeGraphIndex, StorageContext
-from llama_index.core.storage.docstore import SimpleDocumentStore
-from llama_index.core.storage.index_store import SimpleIndexStore
-from llama_index.core.embeddings import BaseEmbedding
-from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+# LlamaIndex imports - 懒加载以支持禁用功能
+try:
+    from llama_index.core import Document, KnowledgeGraphIndex, StorageContext
+    from llama_index.core.storage.docstore import SimpleDocumentStore
+    from llama_index.core.storage.index_store import SimpleIndexStore
+    from llama_index.core.embeddings import BaseEmbedding
+    from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+    LLAMA_INDEX_AVAILABLE = True
+except ImportError:
+    LLAMA_INDEX_AVAILABLE = False
+    # 创建占位符类以避免导入错误
+    Document = None
+    KnowledgeGraphIndex = None
+    StorageContext = None
+    SimpleDocumentStore = None
+    SimpleIndexStore = None
+    BaseEmbedding = None
+    HuggingFaceEmbedding = None
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -58,6 +70,10 @@ class LlamaIndexManager:
         """
         if not self.config.is_llama_index_enabled():
             logger.info("LlamaIndex integration is disabled in configuration")
+            return False
+        
+        if not LLAMA_INDEX_AVAILABLE:
+            logger.warning("LlamaIndex is not available - features will be limited")
             return False
         
         try:
@@ -242,6 +258,10 @@ class LlamaIndexManager:
         """
         if not self.config.is_llama_index_enabled():
             logger.info("LlamaIndex integration is disabled in configuration")
+            return False
+        
+        if not LLAMA_INDEX_AVAILABLE:
+            logger.warning("LlamaIndex is not available")
             return False
         
         # Check if persist directory exists
