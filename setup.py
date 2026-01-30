@@ -10,7 +10,7 @@ with open('README.md', encoding='utf-8') as f:
 
 setup(
     name="iflow-mcp_sparshdrolia_persistent-code",
-    version="0.1.0",
+    version="0.1.1",
     description="An MCP server for maintaining code knowledge across LLM chat sessions",
     long_description=long_description,
     long_description_content_type="text/markdown",
