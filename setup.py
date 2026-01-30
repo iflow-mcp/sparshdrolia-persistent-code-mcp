@@ -21,7 +21,7 @@ setup(
     install_requires=[
         "mcp>=1.2.0",
         "llama-index-core>=0.9.0",
-        "llama-index>=0.9.0",
+        "llama-index>=0.10.0",
         "llama-index-embeddings-huggingface>=0.1.0",
         "transformers>=4.34.0",
         "networkx>=3.1",
